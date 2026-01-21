@@ -82,7 +82,13 @@
       "wechat": "WeChat",
       "github": "GitHub Repository",
       "sponsor": "Sponsoren",
-      "supportDev": "Entwicklung unterstützen"
+      "supportDev": "Entwicklung unterstützen",
+      "checkUpdate": "Auf Updates prüfen",
+      "checking": "Suche...",
+      "upToDate": "Aktuell",
+      "newVersion": "v{{version}} verfügbar",
+      "download": "Herunterladen",
+      "checkFailed": "Fehler bei der Update-Suche"
     },
     "saveSettings": "Einstellungen speichern"
   },
@@ -468,5 +474,10 @@
       "start": "Test starten",
       "testing": "Teste..."
     }
+  },
+  "update_notification": {
+    "title": "Update verfügbar",
+    "message": "Aktuelle Version v{{current}}, eine neue Version ist verfügbar.",
+    "action": "Jetzt herunterladen"
   }
 }

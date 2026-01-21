@@ -2,20 +2,47 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { listen, UnlistenFn } from '@tauri-apps/api/event';
+import { invoke } from '@tauri-apps/api/core';
 import { AccountsPage } from './pages/AccountsPage';
 import { FingerprintsPage } from './pages/FingerprintsPage';
 import { WakeupTasksPage } from './pages/WakeupTasksPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { SideNav } from './components/layout/SideNav';
+import { UpdateNotification } from './components/UpdateNotification';
 import { Page } from './types/navigation';
 import { useAutoRefresh } from './hooks/useAutoRefresh';
 import { changeLanguage, getCurrentLanguage, normalizeLanguage } from './i18n';
 
 function App() {
   const [page, setPage] = useState<Page>('overview');
+  const [showUpdateNotification, setShowUpdateNotification] = useState(false);
   
   // 启用自动刷新 hook
   useAutoRefresh();
+
+  // Check for updates on startup
+  useEffect(() => {
+    const checkUpdates = async () => {
+      try {
+        console.log('[App] Checking if we should check for updates...');
+        const shouldCheck = await invoke<boolean>('should_check_updates');
+        console.log('[App] Should check updates:', shouldCheck);
+
+        if (shouldCheck) {
+          setShowUpdateNotification(true);
+          // 标记已经检查过了
+          await invoke('update_last_check_time');
+          console.log('[App] Update check cycle initiated and last check time updated.');
+        }
+      } catch (error) {
+        console.error('Failed to check update settings:', error);
+      }
+    };
+
+    // Delay check to avoid blocking initial render
+    const timer = setTimeout(checkUpdates, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     let unlisten: UnlistenFn | undefined;
@@ -43,6 +70,11 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* 更新通知 */}
+      {showUpdateNotification && (
+        <UpdateNotification onClose={() => setShowUpdateNotification(false)} />
+      )}
+      
       {/* 顶部固定拖拽区域 */}
       <div 
         className="drag-region"

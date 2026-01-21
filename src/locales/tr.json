@@ -82,7 +82,13 @@
       "wechat": "WeChat",
       "github": "GitHub Deposu",
       "sponsor": "Sponsor",
-      "supportDev": "Geliştirmeyi Destekle"
+      "supportDev": "Geliştirmeyi Destekle",
+      "checkUpdate": "Güncellemeleri Kontrol Et",
+      "checking": "Kontrol ediliyor...",
+      "upToDate": "Güncel",
+      "newVersion": "v{{version}} mevcut",
+      "download": "İndir",
+      "checkFailed": "Güncelleme kontrolü başarısız oldu"
     },
     "saveSettings": "Ayarları Kaydet"
   },
@@ -468,5 +474,10 @@
       "start": "Testi başlat",
       "testing": "Test ediliyor..."
     }
+  },
+  "update_notification": {
+    "title": "Güncelleme Mevcut",
+    "message": "Mevcut sürüm v{{current}}, yeni bir sürüm mevcut.",
+    "action": "Şimdi İndir"
   }
 }

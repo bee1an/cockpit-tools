@@ -100,15 +100,29 @@ Supports integration with [Antigravity Cockpit](https://github.com/jlcodes99/vsc
 
 ---
 
-## Installation
+## Installation Guide
 
-### Download Release
+### Option A: Manual Download (Recommended)
 
-Download the installer for your platform from the [Releases](https://github.com/jlcodes99/antigravity-cockpit-tools/releases) page:
+Go to [GitHub Releases](https://github.com/jlcodes99/antigravity-cockpit-tools/releases) to download the package for your system:
 
-- **macOS**: `.dmg` or `.app`
-- **Windows**: `.msi` or `.exe`
-- **Linux**: `.deb`, `.rpm`, or `.AppImage`
+*   **macOS**: `.dmg` (Apple Silicon & Intel)
+*   **Windows**: `.msi` (Recommended) or `.exe`
+*   **Linux**: `.deb` (Debian/Ubuntu) or `.AppImage` (Universal)
+
+### 🛠️ Troubleshooting
+
+#### macOS says "App is damaged and can't be opened"?
+Due to macOS security mechanisms, apps not downloaded from the App Store may trigger this warning. You can quickly fix this by following these steps:
+
+1.  **Command Line Fix** (Recommended):
+    Open Terminal and run the following command:
+    ```bash
+    sudo xattr -rd com.apple.quarantine "/Applications/Cockpit Tools.app"
+    ```
+    > **Note**: If you changed the app name (e.g., to `Antigravity Cockpit Tools.app`), please adjust the path in the command accordingly.
+
+2.  **Or**: Go to "System Settings" -> "Privacy & Security" and click "Open Anyway".
 
 ---
 

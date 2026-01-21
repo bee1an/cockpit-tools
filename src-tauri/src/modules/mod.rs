@@ -13,6 +13,7 @@ pub mod websocket;
 pub mod config;
 pub mod wakeup;
 pub mod sync_settings;
+pub mod update_checker;
 
 // 重新导出常用函数
 pub use account::*;

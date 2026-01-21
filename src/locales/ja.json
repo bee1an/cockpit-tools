@@ -82,7 +82,13 @@
       "wechat": "WeChat 公衆号",
       "github": "GitHub リポジトリ",
       "sponsor": "スポンサー",
-      "supportDev": "開発を支援する"
+      "supportDev": "開発を支援する",
+      "checkUpdate": "アップデートを確認",
+      "checking": "確認中...",
+      "upToDate": "最新の状態です",
+      "newVersion": "v{{version}} が利用可能",
+      "download": "ダウンロード",
+      "checkFailed": "アップデートの確認に失敗しました。後でもう一度お試しください"
     },
     "saveSettings": "設定を保存"
   },
@@ -468,5 +474,10 @@
       "start": "テスト開始",
       "testing": "テスト中..."
     }
+  },
+  "update_notification": {
+    "title": "新しいバージョンが利用可能です",
+    "message": "現在のバージョンは v{{current}} です。新しいバージョンが利用可能です。",
+    "action": "今すぐダウンロード"
   }
 }

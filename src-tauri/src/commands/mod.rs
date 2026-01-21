@@ -4,3 +4,4 @@ pub mod oauth;
 pub mod import;
 pub mod system;
 pub mod wakeup;
+pub mod update;

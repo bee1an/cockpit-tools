@@ -7,10 +7,10 @@ import * as accountService from '../services/accountService';
 import './settings/Settings.css';
 import { 
   Github, User, Rocket, Save, FolderOpen,
-  AlertCircle
+  AlertCircle, RefreshCw, Check, ExternalLink
 } from 'lucide-react';
 
-const APP_VERSION = "v0.1.0";
+const APP_VERSION = "v0.2.0";
 
 /** 网络配置类型 */
 interface NetworkConfig {
@@ -65,6 +65,14 @@ export function SettingsPage() {
   const [defaultPort, setDefaultPort] = useState(19528);
   const [needsRestart, setNeedsRestart] = useState(false);
   const [networkSaving, setNetworkSaving] = useState(false);
+  
+  // Update check states
+  const [updateChecking, setUpdateChecking] = useState(false);
+  const [updateResult, setUpdateResult] = useState<{
+    has_update: boolean;
+    latest_version: string;
+    download_url: string;
+  } | null>(null);
   
   // 加载配置
   useEffect(() => {
@@ -199,6 +207,30 @@ export function SettingsPage() {
 
   const openLink = (url: string) => {
     openUrl(url);
+  };
+
+  // 检查更新
+  const handleCheckUpdate = async () => {
+    setUpdateChecking(true);
+    setUpdateResult(null);
+    try {
+      const info = await invoke<{
+        has_update: boolean;
+        latest_version: string;
+        current_version: string;
+        download_url: string;
+      }>('check_for_updates');
+      setUpdateResult({
+        has_update: info.has_update,
+        latest_version: info.latest_version,
+        download_url: info.download_url,
+      });
+    } catch (err) {
+      console.error('检查更新失败:', err);
+      alert(t('settings.about.checkFailed'));
+    } finally {
+      setUpdateChecking(false);
+    }
   };
 
   return (
@@ -468,7 +500,40 @@ export function SettingsPage() {
               </div>
               <div className="app-info">
                 <h2>{t('settings.about.appName')}</h2>
-                <div className="version-tag">{APP_VERSION}</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div className="version-tag">{APP_VERSION}</div>
+                  <button 
+                    className="btn btn-sm btn-ghost"
+                    onClick={handleCheckUpdate}
+                    disabled={updateChecking}
+                    style={{ 
+                      fontSize: '12px', 
+                      padding: '4px 10px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    {updateChecking ? (
+                      <><RefreshCw size={14} className="animate-spin" /> {t('settings.about.checking')}</>
+                    ) : updateResult?.has_update ? (
+                      <><ExternalLink size={14} /> {t('settings.about.newVersion', { version: updateResult.latest_version })}</>
+                    ) : updateResult ? (
+                      <><Check size={14} /> {t('settings.about.upToDate')}</>
+                    ) : (
+                      <><RefreshCw size={14} /> {t('settings.about.checkUpdate')}</>
+                    )}
+                  </button>
+                  {updateResult?.has_update && (
+                    <button
+                      className="btn btn-sm btn-primary"
+                      onClick={() => openLink(updateResult.download_url)}
+                      style={{ fontSize: '12px', padding: '4px 10px' }}
+                    >
+                      {t('settings.about.download')}
+                    </button>
+                  )}
+                </div>
               </div>
               <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
                 {t('settings.about.slogan')}

@@ -82,7 +82,13 @@
       "wechat": "WeChat",
       "github": "GitHub repozitář",
       "sponsor": "Sponzorovat",
-      "supportDev": "Podpořit vývoj"
+      "supportDev": "Podpořit vývoj",
+      "checkUpdate": "Zkontrolovat aktualizace",
+      "checking": "Kontrola...",
+      "upToDate": "Aktuální",
+      "newVersion": "v{{version}} k dispozici",
+      "download": "Stáhnout",
+      "checkFailed": "Kontrola aktualizací selhala"
     },
     "saveSettings": "Uložit nastavení"
   },
@@ -468,5 +474,10 @@
       "start": "Spustit test",
       "testing": "Testování..."
     }
+  },
+  "update_notification": {
+    "title": "Aktualizace k dispozici",
+    "message": "Současná verze v{{current}}, je k dispozici nová verze.",
+    "action": "Stáhnout nyní"
   }
 }

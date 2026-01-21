@@ -82,7 +82,13 @@
       "wechat": "Tài khoản WeChat chính thức",
       "github": "Kho lưu trữ mã nguồn",
       "sponsor": "Tài trợ dự án",
-      "supportDev": "Hỗ trợ phát triển"
+      "supportDev": "Hỗ trợ phát triển",
+      "checkUpdate": "Kiểm tra cập nhật",
+      "checking": "Đang kiểm tra...",
+      "upToDate": "Đã là bản mới nhất",
+      "newVersion": "Có v{{version}}",
+      "download": "Tải về",
+      "checkFailed": "Kiểm tra cập nhật thất bại, vui lòng thử lại sau"
     },
     "saveSettings": "Lưu cài đặt"
   },
@@ -468,5 +474,10 @@
       "start": "Bắt đầu thử nghiệm",
       "testing": "Đang thử nghiệm..."
     }
+  },
+  "update_notification": {
+    "title": "Có bản cập nhật mới",
+    "message": "Phiên bản hiện tại v{{current}}, đã có phiên bản mới.",
+    "action": "Tải về ngay"
   }
 }

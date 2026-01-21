@@ -82,7 +82,13 @@
       "wechat": "微信公众号",
       "github": "开源仓库",
       "sponsor": "赞助项目",
-      "supportDev": "支持开发"
+      "supportDev": "支持开发",
+      "checkUpdate": "检查更新",
+      "checking": "检查中...",
+      "upToDate": "已是最新版本",
+      "newVersion": "发现 v{{version}}",
+      "download": "下载",
+      "checkFailed": "检查更新失败，请稍后重试"
     },
     "saveSettings": "保存设置"
   },
@@ -494,5 +500,10 @@
       "start": "开始测试",
       "testing": "测试中..."
     }
+  },
+  "update_notification": {
+    "title": "发现新版本",
+    "message": "当前版本 v{{current}}，新版本已可用。",
+    "action": "前往下载"
   }
 }

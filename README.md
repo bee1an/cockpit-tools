@@ -100,15 +100,29 @@
 
 ---
 
-## 安装
+## 安装指南 (Installation)
 
-### 下载发行包
+### 选项 A: 手动下载 (推荐)
 
-从 [Releases](https://github.com/jlcodes99/antigravity-cockpit-tools/releases) 页面下载对应平台的安装包：
+前往 [GitHub Releases](https://github.com/jlcodes99/antigravity-cockpit-tools/releases) 下载对应系统的安装包：
 
-- **macOS**：`.dmg` 或 `.app`
-- **Windows**：`.msi` 或 `.exe`
-- **Linux**：`.deb`、`.rpm` 或 `.AppImage`
+*   **macOS**: `.dmg` (Apple Silicon & Intel)
+*   **Windows**: `.msi` (推荐) 或 `.exe`
+*   **Linux**: `.deb` (Debian/Ubuntu) 或 `.AppImage` (通用)
+
+### 🛠️ 常见问题排查 (Troubleshooting)
+
+#### macOS 提示“应用已损坏，无法打开”？
+由于 macOS 的安全机制，非 App Store 下载的应用可能会触发此提示。您可以按照以下步骤快速修复：
+
+1.  **命令行修复** (推荐):
+    打开终端，执行以下命令：
+    ```bash
+    sudo xattr -rd com.apple.quarantine "/Applications/Cockpit Tools.app"
+    ```
+    > **注意**: 如果您修改了应用名称（如 `Antigravity Cockpit Tools.app`），请在命令中相应调整路径。
+
+2.  **或者**: 在“系统设置” -> “隐私与安全性”中点击“仍要打开”。
 
 ---
 

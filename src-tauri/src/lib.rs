@@ -130,6 +130,13 @@ pub fn run() {
             // Wakeup Commands
             commands::wakeup::trigger_wakeup,
             commands::wakeup::fetch_available_models,
+            
+            // Update Commands
+            commands::update::check_for_updates,
+            commands::update::should_check_updates,
+            commands::update::update_last_check_time,
+            commands::update::get_update_settings,
+            commands::update::save_update_settings,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
