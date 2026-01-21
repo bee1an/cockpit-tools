@@ -147,6 +147,12 @@
       "ultra": "ULTRA ({{count}})",
       "free": "FREE ({{count}})"
     },
+    "sortLabel": "정렬",
+    "sort": {
+      "default": "기본값",
+      "overall": "전체 할당량순",
+      "byGroup": "{{group}} 할당량순"
+    },
     "actions": {
       "viewDetails": "상세 보기",
       "fingerprint": "지문",
@@ -479,5 +485,11 @@
     "title": "새로운 버전이 있습니다",
     "message": "현재 버전은 v{{current}}입니다. 새로운 버전을 사용할 수 있습니다.",
     "action": "지금 다운로드"
+  },
+  "group_settings": {
+    "title": "그룹 관리",
+    "group_list": "그룹 목록",
+    "group_name_placeholder": "그룹 이름",
+    "save": "그룹 저장"
   }
 }

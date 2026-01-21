@@ -147,6 +147,12 @@
       "ultra": "ULTRA ({{count}})",
       "free": "ZDARMA ({{count}})"
     },
+    "sortLabel": "Seřadit",
+    "sort": {
+      "default": "Výchozí",
+      "overall": "Podle celkové kvóty",
+      "byGroup": "Podle kvóty {{group}}"
+    },
     "actions": {
       "viewDetails": "Zobrazit detaily",
       "fingerprint": "Otisk",
@@ -479,5 +485,11 @@
     "title": "Aktualizace k dispozici",
     "message": "Současná verze v{{current}}, je k dispozici nová verze.",
     "action": "Stáhnout nyní"
+  },
+  "group_settings": {
+    "title": "Správa skupin",
+    "group_list": "Seznam skupin",
+    "group_name_placeholder": "Název skupiny",
+    "save": "Uložit skupiny"
   }
 }

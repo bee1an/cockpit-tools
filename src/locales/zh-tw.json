@@ -147,6 +147,12 @@
       "ultra": "ULTRA ({{count}})",
       "free": "FREE ({{count}})"
     },
+    "sortLabel": "排序",
+    "sort": {
+      "default": "默認排序",
+      "overall": "按綜合配額",
+      "byGroup": "按 {{group}} 配額"
+    },
     "actions": {
       "viewDetails": "查看詳情",
       "fingerprint": "指紋",
@@ -479,5 +485,11 @@
     "title": "發現新版本",
     "message": "目前版本 v{{current}}，新版本已可用。",
     "action": "前往下載"
+  },
+  "group_settings": {
+    "title": "分組管理",
+    "group_list": "分組列表",
+    "group_name_placeholder": "分組名稱",
+    "save": "保存分組"
   }
 }

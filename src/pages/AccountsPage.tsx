@@ -21,6 +21,8 @@ import {
   CircleAlert,
   Play,
   RotateCw,
+  Package,
+  ArrowDownWideNarrow,
 } from 'lucide-react';
 import { useTranslation, Trans } from 'react-i18next';
 import { useAccountStore } from '../stores/useAccountStore';
@@ -31,6 +33,14 @@ import { getQuotaClass, formatResetTimeDisplay, getSubscriptionTier, getDisplayM
 import { listen, UnlistenFn } from '@tauri-apps/api/event';
 import { save } from '@tauri-apps/plugin-dialog';
 import { invoke } from '@tauri-apps/api/core';
+import { GroupSettingsModal } from '../components/GroupSettingsModal';
+import {
+  GroupSettings,
+  DisplayGroup,
+  getDisplayGroups,
+  calculateOverallQuota,
+  calculateGroupQuota,
+} from '../services/groupService';
 
 interface AccountsPageProps {
   onNavigate?: (page: Page) => void;
@@ -77,6 +87,12 @@ export function AccountsPage({ onNavigate }: AccountsPageProps) {
 
   // Quota Detail Modal
   const [showQuotaModal, setShowQuotaModal] = useState<string | null>(null);
+  
+  // 分组管理
+  const [showGroupModal, setShowGroupModal] = useState(false);
+  const [displayGroups, setDisplayGroups] = useState<DisplayGroup[]>([]);
+  const [sortBy, setSortBy] = useState<'overall' | string>('overall');
+  
   const showAddModalRef = useRef(showAddModal);
   const addTabRef = useRef(addTab);
   const oauthUrlRef = useRef(oauthUrl);
@@ -88,6 +104,33 @@ export function AccountsPage({ onNavigate }: AccountsPageProps) {
     oauthUrlRef.current = oauthUrl;
     addStatusRef.current = addStatus;
   }, [showAddModal, addTab, oauthUrl, addStatus]);
+
+  // 获取账号的配额数据 (modelId -> percentage)
+  const getAccountQuotas = (account: Account): Record<string, number> => {
+    const quotas: Record<string, number> = {};
+    if (account.quota?.models) {
+      for (const model of account.quota.models) {
+        quotas[model.name] = model.percentage;
+      }
+    }
+    return quotas;
+  };
+
+  // 根据分组配置获取模型所属分组的名称
+  const getGroupNameForModel = (modelId: string): string | null => {
+    for (const group of displayGroups) {
+      if (group.models.includes(modelId)) {
+        return group.name;
+      }
+    }
+    return null;
+  };
+
+  // 获取模型显示名称（优先使用分组名，否则使用默认短名）
+  const getModelDisplayLabel = (modelId: string): string => {
+    const groupName = getGroupNameForModel(modelId);
+    return groupName || getModelShortName(modelId);
+  };
 
   // 筛选后的账号
   const filteredAccounts = useMemo(() => {
@@ -104,17 +147,49 @@ export function AccountsPage({ onNavigate }: AccountsPageProps) {
       result = result.filter(acc => getSubscriptionTier(acc.quota) === filterType);
     }
     
-    // 排序：当前账号优先，然后按最近使用
-    result.sort((a, b) => {
-      if (currentAccount?.id === a.id) return -1;
-      if (currentAccount?.id === b.id) return 1;
-      if (!a.disabled && b.disabled) return -1;
-      if (a.disabled && !b.disabled) return 1;
-      return b.last_used - a.last_used;
-    });
+    // 排序逻辑
+    if (sortBy !== 'default' && sortBy !== 'overall' && displayGroups.length > 0) {
+      // 按指定分组配额排序（从大到小），相同配额按总配额再排序
+      const groupSettings: GroupSettings = {
+        groupMappings: {},
+        groupNames: {},
+        groupOrder: displayGroups.map(g => g.id),
+        updatedAt: 0,
+        updatedBy: 'desktop',
+      };
+      // 从 displayGroups 构建 groupMappings
+      for (const group of displayGroups) {
+        groupSettings.groupNames[group.id] = group.name;
+        for (const modelId of group.models) {
+          groupSettings.groupMappings[modelId] = group.id;
+        }
+      }
+      
+      result.sort((a, b) => {
+        const aGroupQuota = calculateGroupQuota(sortBy, getAccountQuotas(a), groupSettings) ?? 0;
+        const bGroupQuota = calculateGroupQuota(sortBy, getAccountQuotas(b), groupSettings) ?? 0;
+        
+        // 如果分组配额不同，按分组配额排序
+        if (aGroupQuota !== bGroupQuota) {
+          return bGroupQuota - aGroupQuota;
+        }
+        
+        // 分组配额相同，按总配额排序
+        const aOverall = calculateOverallQuota(getAccountQuotas(a));
+        const bOverall = calculateOverallQuota(getAccountQuotas(b));
+        return bOverall - aOverall;
+      });
+    } else {
+      // 默认按综合配额排序（从大到小）
+      result.sort((a, b) => {
+        const aQuota = calculateOverallQuota(getAccountQuotas(a));
+        const bQuota = calculateOverallQuota(getAccountQuotas(b));
+        return bQuota - aQuota;
+      });
+    }
     
     return result;
-  }, [accounts, searchQuery, filterType, currentAccount]);
+  }, [accounts, searchQuery, filterType, currentAccount, sortBy, displayGroups]);
 
   // 统计数量
   const tierCounts = useMemo(() => {
@@ -135,12 +210,23 @@ export function AccountsPage({ onNavigate }: AccountsPageProps) {
     } catch (e) { console.error(e); }
   };
 
+  // 加载显示用分组配置
+  const loadDisplayGroups = async () => {
+    try {
+      const groups = await getDisplayGroups();
+      setDisplayGroups(groups);
+    } catch (e) { console.error('Failed to load display groups:', e); }
+  };
+
   useEffect(() => {
     fetchAccounts();
     fetchCurrentAccount();
     loadFingerprints();
+    loadDisplayGroups();
     
     let unlisten: UnlistenFn | undefined;
+    let unlistenGroups: UnlistenFn | undefined;
+    
     listen<string>('accounts:refresh', async () => {
       await fetchAccounts();
       await fetchCurrentAccount();
@@ -152,7 +238,15 @@ export function AccountsPage({ onNavigate }: AccountsPageProps) {
       }
     }).then(fn => { unlisten = fn; });
     
-    return () => { if (unlisten) unlisten(); };
+    // 监听分组配置变更
+    listen('group_settings:changed', async () => {
+      await loadDisplayGroups();
+    }).then(fn => { unlistenGroups = fn; });
+    
+    return () => {
+      if (unlisten) unlisten();
+      if (unlistenGroups) unlistenGroups();
+    };
   }, [fetchAccounts, fetchCurrentAccount, refreshQuota]);
 
   useEffect(() => {
@@ -274,7 +368,10 @@ export function AccountsPage({ onNavigate }: AccountsPageProps) {
   };
 
   const closeAddModal = () => {
-    if (addStatus === 'loading') return;
+    // 允许用户随时关闭弹窗，取消正在进行的 OAuth 流程
+    if (addStatus === 'loading') {
+      accountService.cancelOAuthLogin().catch(() => {});
+    }
     setShowAddModal(false);
     resetAddModalState();
     setOauthUrl('');
@@ -609,7 +706,7 @@ export function AccountsPage({ onNavigate }: AccountsPageProps) {
                 return (
                   <div key={model.name} className="quota-compact-item">
                     <div className="quota-compact-header">
-                      <span className="model-label">{getModelShortName(model.name)}</span>
+                      <span className="model-label">{getModelDisplayLabel(model.name)}</span>
                       <span className={`model-pct ${getQuotaClass(model.percentage)}`}>{model.percentage}%</span>
                     </div>
                     <div className="quota-compact-bar-track">
@@ -640,8 +737,8 @@ export function AccountsPage({ onNavigate }: AccountsPageProps) {
                 <button 
                   className={`card-action-btn ${!isCurrent ? 'success' : ''}`}
                   onClick={() => handleSwitch(account.id)} 
-                  disabled={!!switching || isCurrent}
-                  title={t('accounts.actions.switch')}
+                  disabled={!!switching}
+                  title={isCurrent ? t('accounts.actions.switch') : t('accounts.actions.switchTo')}
                 >
                   {switching === account.id ? <RefreshCw size={14} className="loading-spinner" /> : <Play size={14} />}
                 </button>
@@ -736,7 +833,7 @@ export function AccountsPage({ onNavigate }: AccountsPageProps) {
                     {displayModels.map((model) => (
                       <div className="quota-item" key={model.name}>
                         <div className="quota-header">
-                          <span className="quota-name">{getModelShortName(model.name)}</span>
+                          <span className="quota-name">{getModelDisplayLabel(model.name)}</span>
                           <span className={`quota-value ${getQuotaClass(model.percentage)}`}>{model.percentage}%</span>
                         </div>
                         <div className="quota-progress-track">
@@ -766,7 +863,7 @@ export function AccountsPage({ onNavigate }: AccountsPageProps) {
                       className={`action-btn ${!isCurrent ? 'success' : ''}`} 
                       onClick={() => handleSwitch(account.id)} 
                       disabled={!!switching} 
-                      title={t('accounts.actions.switchTo')}
+                      title={isCurrent ? t('accounts.actions.switch') : t('accounts.actions.switchTo')}
                     >
                       {switching === account.id ? <div className="loading-spinner" style={{ width: 14, height: 14 }} /> : <Play size={16} />}
                     </button>
@@ -846,6 +943,23 @@ export function AccountsPage({ onNavigate }: AccountsPageProps) {
                 <option value="FREE">{t('accounts.filter.free', { count: tierCounts.FREE })}</option>
               </select>
             </div>
+            
+            {/* 排序下拉菜单 */}
+            <div className="sort-select">
+              <ArrowDownWideNarrow size={14} className="sort-icon" />
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                aria-label={t('accounts.sortLabel', '排序')}
+              >
+                <option value="overall">{t('accounts.sort.overall', '按综合配额')}</option>
+                {displayGroups.map(group => (
+                  <option key={group.id} value={group.id}>
+                    {t('accounts.sort.byGroup', { group: group.name, defaultValue: `按 ${group.name} 配额` })}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="toolbar-right">
@@ -865,6 +979,14 @@ export function AccountsPage({ onNavigate }: AccountsPageProps) {
               aria-label={t('accounts.refreshAll')}
             >
               <RefreshCw size={14} className={refreshingAll ? 'loading-spinner' : ''} />
+            </button>
+            <button
+              className="btn btn-secondary icon-only"
+              onClick={() => setShowGroupModal(true)}
+              title={t('group_settings.title', '分组管理')}
+              aria-label={t('group_settings.title', '分组管理')}
+            >
+              <Package size={14} />
             </button>
             <button
               className="btn btn-secondary icon-only"
@@ -1191,6 +1313,15 @@ export function AccountsPage({ onNavigate }: AccountsPageProps) {
           </div>
         );
       })()}
+      
+      {/* 分组管理弹窗 */}
+      <GroupSettingsModal
+        isOpen={showGroupModal}
+        onClose={() => {
+          setShowGroupModal(false);
+          loadDisplayGroups();
+        }}
+      />
     </>
   );
 }

@@ -147,6 +147,12 @@
       "ultra": "ULTRA ({{count}})",
       "free": "MIỄN PHÍ ({{count}})"
     },
+    "sortLabel": "Sắp xếp",
+    "sort": {
+      "default": "Mặc định",
+      "overall": "Theo tổng hạn mức",
+      "byGroup": "Theo hạn mức {{group}}"
+    },
     "actions": {
       "viewDetails": "Xem chi tiết",
       "fingerprint": "Vân tay",
@@ -479,5 +485,11 @@
     "title": "Có bản cập nhật mới",
     "message": "Phiên bản hiện tại v{{current}}, đã có phiên bản mới.",
     "action": "Tải về ngay"
+  },
+  "group_settings": {
+    "title": "Quản lý nhóm",
+    "group_list": "Danh sách nhóm",
+    "group_name_placeholder": "Tên nhóm",
+    "save": "Lưu nhóm"
   }
 }

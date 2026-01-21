@@ -147,6 +147,12 @@
       "ultra": "ULTRA ({{count}})",
       "free": "FREE ({{count}})"
     },
+    "sortLabel": "Sort",
+    "sort": {
+      "default": "Default",
+      "overall": "By overall quota",
+      "byGroup": "By {{group}} quota"
+    },
     "actions": {
       "viewDetails": "View details",
       "fingerprint": "Fingerprint",
@@ -479,5 +485,11 @@
     "title": "Update Available",
     "message": "Current version v{{current}}, a new version is available.",
     "action": "Download Now"
+  },
+  "group_settings": {
+    "title": "Group Management",
+    "group_list": "Group List",
+    "group_name_placeholder": "Group Name",
+    "save": "Save Groups"
   }
 }

@@ -14,6 +14,7 @@ pub mod config;
 pub mod wakeup;
 pub mod sync_settings;
 pub mod update_checker;
+pub mod group_settings;
 
 // 重新导出常用函数
 pub use account::*;

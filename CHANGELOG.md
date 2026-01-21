@@ -8,6 +8,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.3.0] - 2026-01-22
+
+### Added
+- **Model Grouping Management**: New grouping modal to customize model group display names.
+  - Four fixed groups: Claude 4.5, G3-Pro, G3-Flash, G3-Image.
+  - Custom group names are applied to account cards and sorting dropdowns.
+  - Group settings are persisted locally and auto-initialized on first launch.
+- **Account Sorting**: Added sorting options for account list.
+  - Default sorting by overall quota.
+  - Sort by specific group quota (e.g., by Claude 4.5 quota).
+  - Secondary sorting by overall quota when group quotas are equal.
+- **i18n**: Added sorting and group management translations for all 17 supported languages.
+
+### Changed
+- Model names on account cards now dynamically reflect custom group names.
+- Removed "Other" group display to simplify the grouping model.
+- Decoupled grouping configuration between desktop app and VS Code extension.
+
+---
+
 ## [0.2.0] - 2026-01-21
 
 ### Added

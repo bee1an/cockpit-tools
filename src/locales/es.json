@@ -147,6 +147,12 @@
       "ultra": "ULTRA ({{count}})",
       "free": "FREE ({{count}})"
     },
+    "sortLabel": "Ordenar",
+    "sort": {
+      "default": "Predeterminado",
+      "overall": "Por cuota general",
+      "byGroup": "Por cuota de {{group}}"
+    },
     "actions": {
       "viewDetails": "Ver detalles",
       "fingerprint": "Huella",
@@ -479,5 +485,11 @@
     "title": "Actualización disponible",
     "message": "Versión actual v{{current}}, hay una nueva versión disponible.",
     "action": "Descargar ahora"
+  },
+  "group_settings": {
+    "title": "Gestión de grupos",
+    "group_list": "Lista de grupos",
+    "group_name_placeholder": "Nombre del grupo",
+    "save": "Guardar grupos"
   }
 }

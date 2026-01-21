@@ -147,6 +147,12 @@
       "ultra": "ULTRA ({{count}})",
       "free": "ÜCRETSİZ ({{count}})"
     },
+    "sortLabel": "Sırala",
+    "sort": {
+      "default": "Varsayılan",
+      "overall": "Toplam kotaya göre",
+      "byGroup": "{{group}} kotasına göre"
+    },
     "actions": {
       "viewDetails": "Detayları görüntüle",
       "fingerprint": "Parmak izi",
@@ -479,5 +485,11 @@
     "title": "Güncelleme Mevcut",
     "message": "Mevcut sürüm v{{current}}, yeni bir sürüm mevcut.",
     "action": "Şimdi İndir"
+  },
+  "group_settings": {
+    "title": "Grup yönetimi",
+    "group_list": "Grup listesi",
+    "group_name_placeholder": "Grup adı",
+    "save": "Grupları kaydet"
   }
 }

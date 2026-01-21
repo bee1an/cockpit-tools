@@ -147,6 +147,12 @@
       "ultra": "ULTRA ({{count}})",
       "free": "FREE ({{count}})"
     },
+    "sortLabel": "Ordenar",
+    "sort": {
+      "default": "Padrão",
+      "overall": "Por cota total",
+      "byGroup": "Por cota de {{group}}"
+    },
     "actions": {
       "viewDetails": "Ver detalhes",
       "fingerprint": "Impressão digital",
@@ -479,5 +485,11 @@
     "title": "Atualização disponível",
     "message": "Versão atual v{{current}}, uma nova versão está disponível.",
     "action": "Baixar agora"
+  },
+  "group_settings": {
+    "title": "Gerenciamento de grupos",
+    "group_list": "Lista de grupos",
+    "group_name_placeholder": "Nome do grupo",
+    "save": "Salvar grupos"
   }
 }

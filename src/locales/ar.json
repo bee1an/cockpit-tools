@@ -147,6 +147,12 @@
       "ultra": "ULTRA ({{count}})",
       "free": "مجاني ({{count}})"
     },
+    "sortLabel": "فرز",
+    "sort": {
+      "default": "افتراضي",
+      "overall": "حسب الكوتا الإجمالية",
+      "byGroup": "حسب كوتا {{group}}"
+    },
     "actions": {
       "viewDetails": "عرض التفاصيل",
       "fingerprint": "البصمة",
@@ -479,5 +485,11 @@
     "title": "التحديث متاح",
     "message": "الإصدار الحالي v{{current}}، يتوفر إصدار جديد.",
     "action": "تنزيل الآن"
+  },
+  "group_settings": {
+    "title": "إدارة المجموعات",
+    "group_list": "قائمة المجموعات",
+    "group_name_placeholder": "اسم المجموعة",
+    "save": "حفظ المجموعات"
   }
 }

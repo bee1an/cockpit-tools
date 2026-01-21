@@ -147,6 +147,12 @@
       "ultra": "ULTRA ({{count}})",
       "free": "FREE ({{count}})"
     },
+    "sortLabel": "並べ替え",
+    "sort": {
+      "default": "デフォルト",
+      "overall": "総合クォータ順",
+      "byGroup": "{{group}} クォータ順"
+    },
     "actions": {
       "viewDetails": "詳細を見る",
       "fingerprint": "指紋",
@@ -479,5 +485,11 @@
     "title": "新しいバージョンが利用可能です",
     "message": "現在のバージョンは v{{current}} です。新しいバージョンが利用可能です。",
     "action": "今すぐダウンロード"
+  },
+  "group_settings": {
+    "title": "グループ管理",
+    "group_list": "グループ一覧",
+    "group_name_placeholder": "グループ名",
+    "save": "グループを保存"
   }
 }

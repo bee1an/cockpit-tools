@@ -147,6 +147,12 @@
       "ultra": "ULTRA ({{count}})",
       "free": "FREE ({{count}})"
     },
+    "sortLabel": "Сортировка",
+    "sort": {
+      "default": "По умолчанию",
+      "overall": "По общей квоте",
+      "byGroup": "По квоте {{group}}"
+    },
     "actions": {
       "viewDetails": "Подробнее",
       "fingerprint": "Отпечаток",
@@ -479,5 +485,11 @@
     "title": "Доступно обновление",
     "message": "Текущая версия v{{current}}, доступна новая версия.",
     "action": "Скачать сейчас"
+  },
+  "group_settings": {
+    "title": "Управление группами",
+    "group_list": "Список групп",
+    "group_name_placeholder": "Название группы",
+    "save": "Сохранить группы"
   }
 }

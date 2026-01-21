@@ -5,3 +5,4 @@ pub mod import;
 pub mod system;
 pub mod wakeup;
 pub mod update;
+pub mod group;

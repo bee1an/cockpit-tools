@@ -137,6 +137,16 @@ pub fn run() {
             commands::update::update_last_check_time,
             commands::update::get_update_settings,
             commands::update::save_update_settings,
+            
+            // Group Commands
+            commands::group::get_group_settings,
+            commands::group::save_group_settings,
+            commands::group::set_model_group,
+            commands::group::remove_model_group,
+            commands::group::set_group_name,
+            commands::group::delete_group,
+            commands::group::update_group_order,
+            commands::group::get_display_groups,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
